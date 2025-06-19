@@ -1,0 +1,98 @@
+## Compiled source ##
+bin/
+obj/
+out/
+publish/
+
+## Visual Studio / VS Code ##
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build Results ##
+*.dll
+*.exe
+*.app
+*.so
+*.dylib
+
+## NuGet Packages ##
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET Core ##
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json.user
+secrets.json
+*.db
+
+## Entity Framework ##
+Migrations/
+
+## Logs ##
+*.log
+logs/
+
+## Temporary Files ##
+*.tmp
+*.temp
+~$*
+*.bak
+*.backup
+*.old
+
+## OS generated files ##
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+$RECYCLE.BIN/
+
+## Node.js ##
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## JetBrains (Rider) ##
+.idea/
+
+## Coverage and Test Results ##
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
+*.trx
+*.testsettings
+*.vsmdi
+*.vsp
+*.vspx
+*.sap
+
+## Docker ##
+docker-compose.override.yml
+.env
+.env.*
+
+## Others ##
+*.vs/
+.vs/
+*.pid
+*.pid.lock
+
+## Git Ignore for temp branches / worktrees ##
+.git/modules/
+.git/worktrees/
+
+## Optional: Ignore generated client code (ex: Angular/React builds) ##
+wwwroot/dist/
+wwwroot/build/
