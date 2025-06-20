@@ -1,0 +1,30 @@
+/* Fundo da página */
+body {
+    background-color: #f0f0f0; /* cinza claro */
+}
+
+/* Container do formulário */
+.login-container {
+    max-width: 400px;
+    margin: 5rem auto; /* espaço em cima e centralizado */
+    padding: 2rem;
+    background-color: #fff; /* branco */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Título centralizado */
+.login-container h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Botão */
+.login-container button {
+    width: 100%;
+}
+
+/* Inputs */
+.login-container input {
+    border-radius: 4px;
+}
