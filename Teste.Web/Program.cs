@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Teste.Web.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configurar Entity Framework Core para usar SQL Server
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -9,28 +16,22 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+// Configuração do pipeline HTTP
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-
-    // Em produção, sempre usar HTTPS
-    app.UseHttpsRedirection();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
-    // Em desenvolvimento, só usar HTTPS se a porta HTTPS estiver configurada
-    var httpsPort = app.Urls
-        .Select(url => new Uri(url))
-        .FirstOrDefault(u => u.Scheme == Uri.UriSchemeHttps)?.Port;
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
-    if (httpsPort.HasValue)
-    {
-        app.UseHttpsRedirection();
-    }
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
+// HTTPS Redirection (Opcional em Dev, mas ativo se tiver porta configurada)
+if (app.Environment.IsProduction() || app.Urls.Any(url => url.StartsWith("https://")))
+{
+    app.UseHttpsRedirection();
 }
 
 app.UseStaticFiles();
