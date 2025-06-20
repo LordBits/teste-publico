@@ -51,12 +51,6 @@ function clearErrors() {
     input.classList.remove('is-invalid');
     errorDiv.textContent = '';
   });
-
-  document.getElementById('formError').textContent = '';
-};
-
-function showFormError(message) {
-  document.getElementById('formError').textContent = message;
 };
 
 window.onload = function() {

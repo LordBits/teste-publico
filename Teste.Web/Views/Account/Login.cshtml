@@ -20,21 +20,21 @@
                 <label for="email" class="form-label">Email</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="email" class="form-control" id="email" placeholder="Entre com email" />
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Entre com email" />
                 </div>
+                <div class="mt-3 text-danger" id="emailError"></div>
             </div>
             <div class="mb-3">
                 <label for="senha" class="form-label">Senha</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" class="form-control" id="password" placeholder="Entre com a senha" />
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Entre com a senha" />
                 </div>
-                <div class="invalid-feedback" id="passwordError"></div>
+                <div class="mt-3 text-danger" id="passwordError"></div>
             </div><br>
             <button type="submit" class="btn btn-primary w-100">
                 <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
-            <div class="mt-3 text-danger" id="formError"></div>
         </form>
     </div>
     <script src="~/js/login-validation.js"></script>
