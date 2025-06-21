@@ -1,61 +1,63 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-  event.preventDefault();
+document.addEventListener('DOMContentLoaded', function () {
 
-  // limpar erros anteriores
-  clearErrors();
+    const form = document.getElementById('loginForm');
 
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();  // Sempre previne submit tradicional
 
-  let hasError = false;
+        clearErrors();
 
-  if (!email) {
-    showError('email', 'Insira seu e-mail.');
-    hasError = true;
-  } else if (!validateEmail(email)) {
-    showError('email', 'Insira um endereço de e-mail válido.');
-    hasError = true;
-  }
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-  if (!password) {
-    showError('password', 'Insira sua senha.');
-    hasError = true;
-  }
+        let hasError = false;
 
-  if (hasError) {
-    return;
-  }
+        // Validação email
+        if (!email) {
+            showFieldError('email', 'O campo Email é obrigatório.');
+            hasError = true;
+        } else if (!validateEmail(email)) {
+            showFieldError('email', 'Informe um email válido.');
+            hasError = true;
+        }
 
-  // tudo ok
-  this.submit();
+        // Validação senha
+        if (!password) {
+            showFieldError('password', 'O campo Senha é obrigatório.');
+            hasError = true;
+        }
+
+        // Só chama o controller JS se não tiver erro
+        if (!hasError) {
+            fazerLogin(email, password);
+        }
+    });
+
+    form.reset();
+    document.getElementById('email').focus();
 });
 
 function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-};
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
 
-function showError(field, message) {
-  const input = document.getElementById(field);
-  const errorDiv = document.getElementById(field + 'Error');
-
-  input.classList.add('is-invalid');
-  errorDiv.textContent = message;
-};
-
-function clearErrors() {
-  ['email', 'password'].forEach(field => {
+function showFieldError(field, message) {
     const input = document.getElementById(field);
     const errorDiv = document.getElementById(field + 'Error');
 
-    input.classList.remove('is-invalid');
-    errorDiv.textContent = '';
-  });
-};
+    input.classList.add('is-invalid');
+    errorDiv.textContent = message;
+}
 
-window.onload = function() {
-    document.getElementById("loginForm").reset();
+function clearErrors() {
+    ['email', 'password'].forEach(field => {
+        const input = document.getElementById(field);
+        const errorDiv = document.getElementById(field + 'Error');
 
-    // Dá foco no campo de email
-    document.getElementById("email").focus();
-};
+        input.classList.remove('is-invalid');
+        errorDiv.textContent = '';
+    });
+
+    document.getElementById('formError').textContent = '';
+}

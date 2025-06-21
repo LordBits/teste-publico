@@ -1,9 +1,9 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Teste.Web.Models;
 
 namespace Teste.Web.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -13,19 +13,21 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [Authorize]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+    [HttpGet]
     public IActionResult Index()
     {
+        var nome = HttpContext.Session.GetString("UsuarioNome");
+        ViewBag.UsuarioNome = nome;
+
         return View();
     }
 
-    public IActionResult Privacy()
+    [Authorize]
+    [HttpPost]
+    public IActionResult Logout()
     {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return RedirectToAction("Logout", "Account");
     }
 }
