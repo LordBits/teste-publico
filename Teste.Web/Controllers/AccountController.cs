@@ -47,7 +47,7 @@ namespace Teste.Web.Controllers
 
             await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
 
-             // Agora retorna a URL já resolvida no servidor
+            // Agora retorna a URL já resolvida no servidor
             return Json(new { success = true, redirectUrl = Url.Action("index", "home") });
         }
 
@@ -73,7 +73,7 @@ namespace Teste.Web.Controllers
 
             TempData["Message"] = "Deslogado com sucesso.";
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Account");
         }
     }
 }
