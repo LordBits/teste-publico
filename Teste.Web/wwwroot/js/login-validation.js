@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginButton');
+    if (!loginBtn) return;
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();  // Sempre previne submit tradicional
+
+        // Desabilita o botão para evitar múltiplos cliques
+        loginBtn.disabled = true;
 
         clearErrors();
 
@@ -30,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Só chama o controller JS se não tiver erro
         if (!hasError) {
             fazerLogin(email, password);
+        }else{
+            // habilita o button
+            loginBtn.disabled = false;
         }
     });
 

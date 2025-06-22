@@ -19,6 +19,9 @@ function fazerLogin(email, password) {
 
 function showBackendError(message) {
     const errorDiv = document.getElementById('formError');
+    const loginBtn = document.getElementById('loginButton');
     errorDiv.textContent = message;
-    errorDiv.classList.add('text-danger');
+    errorDiv.classList.add('text-danger', 'alert', 'alert-danger');
+    //habilita o button
+    loginBtn.disabled = false;
 };

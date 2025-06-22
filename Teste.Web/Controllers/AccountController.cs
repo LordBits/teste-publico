@@ -57,6 +57,7 @@ namespace Teste.Web.Controllers
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 TempData["Message"] = "Sua sessão expirou. Faça login novamente.";
+                TempData["tipoAlert"] = "warning";
             }
 
             return View();
@@ -72,6 +73,7 @@ namespace Teste.Web.Controllers
             Response.Cookies.Delete(".AspNetCore.Cookies");
 
             TempData["Message"] = "Deslogado com sucesso.";
+            TempData["tipoAlert"] = "success";
 
             return RedirectToAction("Login", "Account");
         }
