@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Teste.Web.Models;
 using Teste.Web.Services.Interfaces;
 
@@ -16,6 +17,7 @@ namespace Teste.Web.Controllers
         }
 
         [HttpPost]
+        [EnableRateLimiting("LoginLimiter")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

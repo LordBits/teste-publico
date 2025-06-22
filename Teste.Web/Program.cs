@@ -1,3 +1,5 @@
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Teste.Web.Database;
@@ -11,13 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddHttpContextAccessor();
+
 // Autenticação via Cookie
 builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {
         options.LoginPath = "/account/login";
         options.LogoutPath = "/account/logout";
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;          // Só HTTPS
+        options.Cookie.HttpOnly = true;                                    // Não acessível via JS
+        options.Cookie.SameSite = SameSiteMode.Strict;                    // Bloqueia envio em requisições externas
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
         options.SlidingExpiration = true;
     });
@@ -26,6 +32,7 @@ builder.Services.AddAuthentication("CookieAuth")
 builder.Services.AddControllersWithViews(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
 
 // Configura transformação de saída (URLs geradas por RedirectToAction, TagHelpers etc.)
@@ -50,6 +57,21 @@ builder.Services.AddSwaggerGen();
 // Injeção de dependências
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Rate Limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("LoginLimiter", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5, // Máximo 5 tentativas
+                Window = TimeSpan.FromMinutes(1), // Por minuto
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0 // Sem fila
+            }));
+});
+
 var app = builder.Build();
 
 // Pipeline de middlewares
@@ -64,7 +86,24 @@ else
     app.UseSwaggerUI();
 }
 
+app.UseRateLimiter();
+
 app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+    context.Response.Headers.Append("Content-Security-Policy",
+        $"default-src 'self'; " +
+        $"script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+        $"style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+        $"font-src 'self' https://cdn.jsdelivr.net; " +
+        $"img-src 'self' data:;");
+
+    await next();
+});
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -91,6 +130,13 @@ app.Use(async (context, next) =>
         context.Response.Headers["Pragma"] = "no-cache";
         context.Response.Headers["Expires"] = "0";
     }
+});
+
+//Redirecionamento para raíz
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/account/login");
+    return Task.CompletedTask;
 });
 
 // Map de rotas (com slugify ativo)

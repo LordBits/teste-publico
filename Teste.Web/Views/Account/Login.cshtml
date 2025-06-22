@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Login";
     Layout = null;
+    var nonce = Context.Items["CSPNonce"]?.ToString();
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,33 +18,31 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
 </head>
-
 <body>
     <div class="login-container">
         <h2 class="text-center mb-4">Login</h2>
-        <form id="loginForm" asp-action="Login" asp-controller="Account" method="post">
+        <form id="loginForm" asp-action="login" asp-controller="account" method="post">
             @Html.AntiForgeryToken()
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label class="form-label">Email</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="email" class="form-control" id="email" name="email" value placeholder="Entre com email" />
+                    <input type="email" class="form-control" autocomplete id="email" name="email" placeholder="Entre com email" />
                 </div>
                 <div class="text-danger" id="emailError"></div>
             </div>
             <div class="mb-3 position-relative">
-                <label for="senha" class="form-label">Senha</label>
+                <label class="form-label">Senha</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" class="form-control" id="password" name="password" value
+                    <input type="password" class="form-control" id="password" name="password"
                         placeholder="Entre com a senha" />
-                    <i id="togglePassword" class="bi bi-eye position-absolute"
-                        style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                    <i id="togglePassword" class="bi bi-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
                 </div>
                 <div class="text-danger" id="passwordError"></div>
             </div>
             <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" value />
+                <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" />
                 <label class="form-check-label" for="rememberMe">
                     Lembrar-me
                 </label>
@@ -55,7 +54,7 @@
             @if (TempData["Message"] != null)
             {
                 var alertType = TempData["tipoAlert"] ?? "success"; // default se não vier nada
-                                                                    <div class="alert alert-@alertType">@TempData["Message"]</div>
+                <div class="alert alert-@alertType">@TempData["Message"]</div>
             }
         </form>
     </div>
@@ -69,5 +68,4 @@
     <script src="~/js/login-validation.js"></script>
     <script src="~/js/login-controller.js"></script>
 </body>
-
 </html>

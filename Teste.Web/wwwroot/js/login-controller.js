@@ -8,7 +8,7 @@ function fazerLogin(email, password, isChecked) {
         localStorage.removeItem('savedPassword');
         localStorage.removeItem('rememberMe');
     }
-    fetch('/Account/Login', {
+    fetch('/account/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
