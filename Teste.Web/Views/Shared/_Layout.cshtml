@@ -1,6 +1,8 @@
 ﻿@{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var isLoginPage = (ViewContext.RouteData.Values["controller"]?.ToString() == "Account"
+                    && ViewContext.RouteData.Values["action"]?.ToString() == "Login");
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,7 +19,7 @@
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Teste.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="@(isLoginPage ? "login-page" : "")">
     <div class="layout-wrapper" id="wrapper">
         <!-- Toggle Mobile -->
         <button id="menuToggle" class="menu-toggle-btn d-md-none" aria-label="Toggle Menu">

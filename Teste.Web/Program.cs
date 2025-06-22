@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Teste.Web.Database;
 using Teste.Web.Routing;
@@ -17,7 +16,10 @@ builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {
         options.LoginPath = "/account/login";
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Força HTTPS nos cookies
+        options.LogoutPath = "/account/logout";
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
     });
 
 // Controle de rotas com slugify (para entrada e geração de URLs)

@@ -41,8 +41,8 @@ namespace Teste.Web.Controllers
 
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true, // Se quiser que a sessão dure mesmo se fechar o navegador
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1) // Tempo de expiração
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : DateTimeOffset.UtcNow.AddMinutes(30)
             };
 
             await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
@@ -70,7 +70,7 @@ namespace Teste.Web.Controllers
 
             await HttpContext.SignOutAsync("CookieAuth");
 
-            Response.Cookies.Delete(".AspNetCore.Cookies");
+            //Response.Cookies.Delete(".AspNetCore.Cookies");
 
             TempData["Message"] = "Deslogado com sucesso.";
             TempData["tipoAlert"] = "success";

@@ -1,8 +1,13 @@
 html, body {
-    height: 100%;
+    height: 90%;
     margin: 0;
     padding: 0;
     background-color: #DCDCDC; /* Cor de fundo */
+}
+
+body.login-page {
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .layout-wrapper {
@@ -29,6 +34,18 @@ html, body {
     width: 100%;
 }
 
+#togglePassword {
+    color: #6c757d; /* cinza para combinar com o placeholder */
+    font-size: 1.2rem;
+}
+
+#togglePassword:hover {
+    color: #495057; /* um pouco mais escuro ao passar o mouse */
+}
+
+input#password {
+    padding-right: 2.5rem; /* Espaço interno no input para o ícone não sobrepor o texto digitado */
+}
 .site-footer-login {
     height: 40px;
     line-height: 40px;

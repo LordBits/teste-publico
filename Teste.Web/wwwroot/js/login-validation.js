@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberMeCheckbox = document.getElementById('rememberMe');
+
+    // Quando a página carrega, tenta preencher os campos
+    if (localStorage.getItem('rememberMe') === 'true') {
+        emailInput.value = localStorage.getItem('savedEmail') || '';
+        passwordInput.value = localStorage.getItem('savedPassword') || '';
+        rememberMeCheckbox.checked = true;
+    }
+
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Troca o ícone
+        if (type === 'text') {
+            togglePassword.classList.remove('bi-eye');
+            togglePassword.classList.add('bi-eye-slash');
+        } else {
+            togglePassword.classList.remove('bi-eye-slash');
+            togglePassword.classList.add('bi-eye');
+        }
+    });
 
     const form = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginButton');
@@ -14,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
+        const isChecked = document.getElementById('rememberMe').checked;
 
         let hasError = false;
 
@@ -34,14 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Só chama o controller JS se não tiver erro
         if (!hasError) {
-            fazerLogin(email, password);
+            fazerLogin(email, password, isChecked);
         }else{
             // habilita o button
             loginBtn.disabled = false;
         }
     });
 
-    form.reset();
     document.getElementById('email').focus();
 });
 
