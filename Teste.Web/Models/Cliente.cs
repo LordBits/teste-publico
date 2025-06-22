@@ -2,8 +2,10 @@ namespace Teste.Web.Models
 {
     public class Cliente
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
+        public int Codigo { get; set; }
+        public required string Nome { get; set; }
+        public required string Fantasia { get; set; }
+        public required string Documento { get; set; }
+        public required string Endereco { get; set; }
     }
 }

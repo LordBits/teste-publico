@@ -18,13 +18,22 @@ namespace Teste.Web.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuração para a tabela Produto - Ajustando o tipo do campo decimal Preco
-            modelBuilder.Entity<Produto>()
-                .Property(p => p.Preco)
-                .HasColumnType("decimal(18,2)");
+            //Minhas chaves primárias com incremento
+            modelBuilder.Entity<Cliente>(entity =>
+            {
+                entity.HasKey(c => c.Codigo);
+                entity.Property(c => c.Codigo).ValueGeneratedOnAdd();
+            });
+            modelBuilder.Entity<Produto>(entity =>
+            {
+                entity.HasKey(p => p.Codigo);
+                entity.Property(p => p.Codigo).ValueGeneratedOnAdd();
+            });
 
-            // Se no futuro precisar adicionar mais configurações de tabelas (constraints, índices, etc)
-            // modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();
+            // Configuração para a tabela Produto - Ajustando o tipo do campo decimal
+            modelBuilder.Entity<Produto>().Property(p => p.ValorVenda).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Produto>().Property(p => p.PesoBruto).HasColumnType("decimal(18,3)");
+            modelBuilder.Entity<Produto>().Property(p => p.PesoLiquido).HasColumnType("decimal(18,3)");
         }
     }
 }

@@ -2,8 +2,11 @@ namespace Teste.Web.Models
 {
     public class Produto
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public decimal Preco { get; set; }
+        public int Codigo { get; set; }
+        public required string Descricao { get; set; }
+        public required string CodigoBarra { get; set; }
+        public decimal ValorVenda { get; set; }
+        public decimal PesoBruto { get; set; }
+        public decimal PesoLiquido { get; set; }
     }
 }
