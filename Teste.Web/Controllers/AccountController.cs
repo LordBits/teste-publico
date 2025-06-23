@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Teste.Web.Models;
-using Teste.Web.Services.Interfaces;
+using Teste.Web.Interfaces;
 
 namespace Teste.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IUsuarioService _usuarioService;
 
-        public AccountController(IAuthService authService)
+        public AccountController(IAuthService authService, IUsuarioService usuarioService)
         {
             _authService = authService;
+            _usuarioService = usuarioService;
         }
 
         [HttpPost]
@@ -49,6 +51,10 @@ namespace Teste.Web.Controllers
 
             await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
 
+            usuario.UltimoLogin = DateTime.UtcNow;
+            
+            await _usuarioService.SalvarAsync(usuario);
+
             // Agora retorna a URL já resolvida no servidor
             return Json(new { success = true, redirectUrl = Url.Action("index", "home") });
         }
@@ -71,8 +77,6 @@ namespace Teste.Web.Controllers
             HttpContext.Session.Clear();
 
             await HttpContext.SignOutAsync("CookieAuth");
-
-            //Response.Cookies.Delete(".AspNetCore.Cookies");
 
             TempData["Message"] = "Deslogado com sucesso.";
             TempData["tipoAlert"] = "success";

@@ -1,6 +1,42 @@
-﻿@{
-    ViewData["Title"] = "Home";
-    var nomeUsuario = ViewBag.UsuarioNome ?? "Usuário";
+﻿@model Teste.Web.Models.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Painel de Controle";
+    var userName = User.Identity?.Name ?? "Usuário";
 }
 
-<h2>Bem-vindo, @nomeUsuario!</h2>
+<div class="container">
+    <!-- Boas-vindas -->
+    <div class="mb-4">
+        <h3>Olá, @userName! 👋</h3>
+        <p>Seja bem-vindo ao Painel de Controle da aplicação.</p>
+    </div>
+
+    <!-- Cards de resumo -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people"></i> Total de Clientes</h5>
+                    <p class="card-text display-6">@Model.TotalClientes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-box-seam"></i> Total de Produtos</h5>
+                    <p class="card-text display-6">@Model.TotalProdutos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-clock-history"></i> Último Login</h5>
+                    <p class="card-text display-6">@Model.UltimoLogin.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

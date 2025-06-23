@@ -7,5 +7,6 @@ namespace Teste.Web.Models
         public required string Email { get; set; }
         public required string SenhaHash { get; set; }
         public DateTime DataCadastro { get; set; }
+        public DateTime? UltimoLogin { get; set; }
     }
 }

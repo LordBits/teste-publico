@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Teste.Web.Database;
 using Teste.Web.Routing;
 using Teste.Web.Services;
-using Teste.Web.Services.Interfaces;
+using Teste.Web.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +56,9 @@ builder.Services.AddSwaggerGen();
 
 // Injeção de dependências
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Rate Limiting
 builder.Services.AddRateLimiter(options =>
