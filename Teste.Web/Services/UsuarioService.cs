@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Teste.Web.Core;
 using Teste.Web.Database;
-using Teste.Web.Interfaces;
-using Teste.Web.Models;
 
 namespace Teste.Web.Services
 {

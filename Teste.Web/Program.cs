@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Teste.Web.Database;
 using Teste.Web.Routing;
 using Teste.Web.Services;
-using Teste.Web.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +58,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Rate Limiting
 builder.Services.AddRateLimiter(options =>
@@ -93,6 +93,8 @@ app.UseRateLimiter();
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
@@ -106,8 +108,6 @@ app.Use(async (context, next) =>
 
     await next();
 });
-
-app.UseStaticFiles();
 
 app.UseRouting();
 

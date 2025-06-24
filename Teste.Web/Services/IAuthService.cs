@@ -1,6 +1,6 @@
-using Teste.Web.Models;
+using Teste.Web.Core;
 
-namespace Teste.Web.Interfaces
+namespace Teste.Web.Services
 {
     public interface IAuthService
     {

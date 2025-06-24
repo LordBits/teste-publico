@@ -1,0 +1,27 @@
+@model Teste.Web.Models.ClienteModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Detalhes do Cliente</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+</div>
+<div class="modal-body">
+    <dl class="row">
+        <dt class="col-sm-3">Código</dt>
+        <dd class="col-sm-9">@Model.Codigo</dd>
+
+        <dt class="col-sm-3">Nome</dt>
+        <dd class="col-sm-9">@Model.Nome</dd>
+
+        <dt class="col-sm-3">Fantasia</dt>
+        <dd class="col-sm-9">@Model.Fantasia</dd>
+
+        <dt class="col-sm-3">Documento</dt>
+        <dd class="col-sm-9">@Model.Documento</dd>
+
+        <dt class="col-sm-3">Endereço</dt>
+        <dd class="col-sm-9">@Model.Endereco</dd>
+    </dl>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+</div>

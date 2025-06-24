@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Teste.Web.Models;
+using Teste.Web.Core;
 
 namespace Teste.Web.Database
 {

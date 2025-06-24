@@ -1,4 +1,4 @@
-namespace Teste.Web.Models
+namespace Teste.Web.Core
 {
     public class Usuario
     {

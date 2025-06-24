@@ -1,7 +1,7 @@
-using Teste.Web.Models;
+using Teste.Web.Core;
 using Teste.Web.Models.ViewModels;
 
-namespace Teste.Web.Interfaces
+namespace Teste.Web.Services
 {
     public interface IProdutoService
     {

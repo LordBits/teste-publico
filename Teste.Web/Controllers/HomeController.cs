@@ -1,8 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Teste.Web.Interfaces;
 using Teste.Web.Models.ViewModels;
+using Teste.Web.Services;
 
 namespace Teste.Web.Controllers;
 
@@ -25,31 +24,20 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        int? userId = null;
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (int.TryParse(userIdClaim, out int parsedId))
-        {
-            userId = parsedId;
-        }
-
-        DateTime? ultimoLogin = null;
-
-        if (userId.HasValue)
-        {
-            var usuario = await _usuarioService.ObterPorIdAsync(userId.Value);
-
-            ultimoLogin = usuario?.UltimoLogin;
-        }
-
+        var ultimoLogin = HttpContext.Session.GetString("UltimoLogin");
         var totalClientes = await _clienteService.ContarClientesAsync();
         var totalProdutos = await _produtoService.ContarProdutosAsync();
+
+        DateTime parsedDate;
+        var ultimoLoginDate = DateTime.TryParse(ultimoLogin, out parsedDate)
+            ? parsedDate
+            : DateTime.UtcNow;
 
         var viewModel = new DashboardViewModel
         {
             TotalClientes = totalClientes,
             TotalProdutos = totalProdutos,
-            UltimoLogin = ultimoLogin ?? DateTime.UtcNow
+            UltimoLogin = ultimoLoginDate
         };
 
         return View(viewModel);

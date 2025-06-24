@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Teste.Web.Models;
-using Teste.Web.Interfaces;
+using Teste.Web.Services;
 
 namespace Teste.Web.Controllers
 {
@@ -33,7 +33,7 @@ namespace Teste.Web.Controllers
                 return Json(new { success = false, message = "Email e/ou senha inválidos." });
             }
 
-            // Criando as Claims (informações que vão dentro do cookie)
+            //Criando as Claims (informações que vão dentro do cookie)
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, usuario.Nome),
@@ -51,11 +51,15 @@ namespace Teste.Web.Controllers
 
             await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
 
+            var ultimoLogin = usuario.UltimoLogin ?? DateTime.UtcNow;
+
+            HttpContext.Session.SetString("UltimoLogin", ultimoLogin.ToString());
+
             usuario.UltimoLogin = DateTime.UtcNow;
             
             await _usuarioService.SalvarAsync(usuario);
 
-            // Agora retorna a URL já resolvida no servidor
+            //Agora retorna a URL já resolvida no servidor
             return Json(new { success = true, redirectUrl = Url.Action("index", "home") });
         }
 

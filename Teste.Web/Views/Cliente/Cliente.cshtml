@@ -1,0 +1,48 @@
+@model Teste.Web.Models.ClienteModel
+
+@{
+    ViewData["Title"] = Model.Codigo == 0 ? "Criar Cliente" : "Editar Cliente";
+}
+
+<div class="container mt-3">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="Save" method="post" class="needs-validation" novalidate>
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Codigo" />
+
+        <div class="mb-3">
+            <label asp-for="Nome" class="form-label"></label>
+            <input asp-for="Nome" class="form-control" required />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Fantasia" class="form-label"></label>
+            <input asp-for="Fantasia" class="form-control" required />
+            <span asp-validation-for="Fantasia" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Documento" class="form-label"></label>
+            <input asp-for="Documento" class="form-control" required />
+            <span asp-validation-for="Documento" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Endereco" class="form-label"></label>
+            <input asp-for="Endereco" class="form-control" required />
+            <span asp-validation-for="Endereco" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            @(Model.Codigo == 0 ? "Criar" : "Salvar Alterações")
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
