@@ -8,17 +8,18 @@
 <div class="container">
     <!-- Boas-vindas -->
     <div class="mb-4">
-        <h3>Olá, @userName! 👋</h3>
+        <h3>Olá, @userName!</h3>
         <p>Seja bem-vindo ao Painel de Controle da aplicação.</p>
     </div>
 
     <!-- Cards de resumo -->
-    <div class="row mb-4">
+    <div class="row">
         <div class="col-md-4">
             <div class="card text-white bg-primary mb-3 shadow">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-people"></i> Total de Clientes</h5>
                     <p class="card-text display-6">@Model.TotalClientes</p>
+                    <a href="@Url.Action("index", "cliente")" class="stretched-link"></a>
                 </div>
             </div>
         </div>
@@ -27,6 +28,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-box-seam"></i> Total de Produtos</h5>
                     <p class="card-text display-6">@Model.TotalProdutos</p>
+                    <a href="#" class="stretched-link"></a>
                 </div>
             </div>
         </div>
@@ -35,6 +37,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-clock-history"></i> Último Login</h5>
                     <p class="card-text display-6">@Model.UltimoLogin.ToString("dd/MM/yyyy HH:mm")</p>
+                    <a href="#" class="stretched-link"></a>
                 </div>
             </div>
         </div>

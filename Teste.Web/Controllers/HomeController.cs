@@ -10,13 +10,11 @@ public class HomeController : Controller
 {
     private readonly IClienteService _clienteService;
     private readonly IProdutoService _produtoService;
-    private readonly IUsuarioService _usuarioService;
 
-    public HomeController(IClienteService clienteService, IProdutoService produtoService, IUsuarioService usuarioService)
+    public HomeController(IClienteService clienteService, IProdutoService produtoService)
     {
         _clienteService = clienteService;
         _produtoService = produtoService;
-        _usuarioService = usuarioService;
     }
 
     [Authorize]

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Teste.Web.Core;
+using Teste.Web.Helpers;
 using Teste.Web.Models;
 using Teste.Web.Services;
 
@@ -30,7 +31,7 @@ namespace Teste.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = new ClienteModel(){Codigo = 0, Nome = "", Fantasia = "", Documento = "", Endereco = "" };
+            var model = new ClienteModel();
 
             return View("Cliente", model);
         }
@@ -55,23 +56,37 @@ namespace Teste.Web.Controllers
             if (!ModelState.IsValid)
                 return View("Cliente", clienteModel);
 
+            var documentoValidar = clienteModel.Documento;
+
+            if (!DocumentoHelper.DocumentoEhValido(DocumentoHelper.SomenteNumeros(documentoValidar)))
+            {
+                ModelState.AddModelError(nameof(documentoValidar), "Documento inválido (CPF/CNPJ)");
+
+                return View("Cliente", clienteModel);
+            }
+
+            var isNewCliente = clienteModel.Codigo == 0;
+
             try
             {
                 var cliente = _mapper.Map<Cliente>(clienteModel);
 
-                if (cliente.Codigo == 0)
-                    await _clienteService.SalvarAsync(cliente);
-                else
-                    await _clienteService.SalvarAsync(cliente);
+                cliente.Documento = DocumentoHelper.SomenteNumeros(cliente.Documento);
 
-                return RedirectToAction(nameof(Index));
+                await _clienteService.SalvarAsync(cliente);
+
+                TempData["Message"] = isNewCliente ? "Cliente cadastrado com sucesso!" : "Cliente atualizado com sucesso!";
+
+                TempData["tipoAlert"] = "success";
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Erro ao salvar cliente: {ex.Message}");
+                TempData["Message"] = $"Erro ao salvar cliente: {ex.Message}";
 
-                return View("Cliente", clienteModel);
+                TempData["tipoAlert"] = "danger";
             }
+
+            return RedirectToAction("Index");
         }
 
         [HttpDelete]
@@ -100,6 +115,8 @@ namespace Teste.Web.Controllers
                 return NotFound();
 
             var clienteModel = _mapper.Map<ClienteModel>(cliente);
+
+            clienteModel.Documento = clienteModel.Documento.FormatarDocumento();
 
             return PartialView("_VisualizarCliente", clienteModel);
         }
