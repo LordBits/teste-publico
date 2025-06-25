@@ -26,46 +26,59 @@ namespace Teste.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var usuario = await _authService.ValidateUserAsync(model.Email, model.Password);
-
-            if (usuario == null)
+            try
             {
-                return Json(new { success = false, message = "Email e/ou senha inválidos." });
+                var usuario = await _authService.ValidateUserAsync(model.Email, model.Password);
+
+                if (usuario == null)
+                {
+                    return Json(new { success = false, message = "Email e/ou senha inválidos." });
+                }
+
+                //Criando as Claims (informações que vão dentro do cookie)
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuario.Nome),
+                    new Claim(ClaimTypes.Email, usuario.Email),
+                    new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe,
+                    ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : DateTimeOffset.UtcNow.AddMinutes(30)
+                };
+
+                await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                var ultimoLogin = usuario.UltimoLogin ?? DateTime.UtcNow;
+
+                HttpContext.Session.SetString("UltimoLogin", ultimoLogin.ToString());
+
+                usuario.UltimoLogin = DateTime.UtcNow;
+
+                await _usuarioService.SalvarAsync(usuario);
+
+                //Agora retorna a URL já resolvida no servidor
+                return Json(new { success = true, redirectUrl = Url.Action("index", "home") });
             }
-
-            //Criando as Claims (informações que vão dentro do cookie)
-            var claims = new List<Claim>
+            catch (Exception)
             {
-                new Claim(ClaimTypes.Name, usuario.Nome),
-                new Claim(ClaimTypes.Email, usuario.Email),
-                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString())
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = model.RememberMe,
-                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : DateTimeOffset.UtcNow.AddMinutes(30)
-            };
-
-            await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity), authProperties);
-
-            var ultimoLogin = usuario.UltimoLogin ?? DateTime.UtcNow;
-
-            HttpContext.Session.SetString("UltimoLogin", ultimoLogin.ToString());
-
-            usuario.UltimoLogin = DateTime.UtcNow;
-            
-            await _usuarioService.SalvarAsync(usuario);
-
-            //Agora retorna a URL já resolvida no servidor
-            return Json(new { success = true, redirectUrl = Url.Action("index", "home") });
+                // Logue o erro de verdade aqui (em arquivo, banco, etc)
+                return Json(new { success = false, message = $"Erro interno. Tente novamente mais tarde." });
+            }
         }
 
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 TempData["Message"] = "Sua sessão expirou. Faça login novamente.";

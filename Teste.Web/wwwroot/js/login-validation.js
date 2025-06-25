@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
-}
+};
 
 function showFieldError(field, message) {
     const input = document.getElementById(field);
@@ -82,7 +82,7 @@ function showFieldError(field, message) {
 
     input.classList.add('is-invalid');
     errorDiv.textContent = message;
-}
+};
 
 function clearErrors() {
     ['email', 'password'].forEach(field => {
@@ -90,8 +90,10 @@ function clearErrors() {
         const errorDiv = document.getElementById(field + 'Error');
 
         input.classList.remove('is-invalid');
+        errorDiv.className = 'd-none';
         errorDiv.textContent = '';
     });
 
+    document.getElementById('formError').className = 'd-none';
     document.getElementById('formError').textContent = '';
-}
+};

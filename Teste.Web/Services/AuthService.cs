@@ -17,10 +17,12 @@ namespace Teste.Web.Services
         {
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email.ToLower().Trim() == email.ToLower().Trim());
 
-            if (usuario == null)
-                return null;
+            // Hash fake para evitar timing attack
+            const string fakeHash = "$2a$12$Wq3v2Eo7eYzXf1JZxTq0SOuLd5PrX5kIQm9kzv3iZ6PsM/OavBq0e"; // bcrypt de senha qualquer
 
-            return BCrypt.Net.BCrypt.Verify(password, usuario.SenhaHash) ? usuario : null;
+            var hashToCheck = usuario?.SenhaHash ?? fakeHash;
+
+            return BCrypt.Net.BCrypt.Verify(password, hashToCheck) ? usuario : null;
         }
     }
 }

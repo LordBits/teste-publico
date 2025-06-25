@@ -1,10 +1,16 @@
 @{
     ViewData["Title"] = "Login";
     Layout = null;
-    var nonce = Context.Items["CSPNonce"]?.ToString();
+    var message = TempData["Message"] as string;
+    var alertType = TempData["tipoAlert"] as string ?? "success";
+
+    // Limpa para evitar reaparecer
+    TempData.Remove("Message");
+    TempData.Remove("tipoAlert");
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +24,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
 </head>
+
 <body>
     <div class="login-container">
         <h2 class="text-center mb-4">Login</h2>
@@ -27,7 +34,8 @@
                 <label class="form-label">Email</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="email" class="form-control" autocomplete id="email" name="email" placeholder="Entre com email" />
+                    <input type="email" class="form-control" autocomplete id="email" name="email"
+                        placeholder="Entre com email" />
                 </div>
                 <div class="text-danger" id="emailError"></div>
             </div>
@@ -37,7 +45,8 @@
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     <input type="password" class="form-control" id="password" name="password"
                         placeholder="Entre com a senha" />
-                    <i id="togglePassword" class="bi bi-eye position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+                    <i id="togglePassword" class="bi bi-eye position-absolute"
+                        style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
                 </div>
                 <div class="text-danger" id="passwordError"></div>
             </div>
@@ -50,11 +59,10 @@
             <button type="submit" class="btn btn-primary w-100" id="loginButton">
                 <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
-            <div id="formError" class="mt-3"></div>
-            @if (TempData["Message"] != null)
+            <div id="formError" class="d-none"></div>
+            @if (!string.IsNullOrEmpty(message))
             {
-                var alertType = TempData["tipoAlert"] ?? "success"; // default se não vier nada
-                <div class="alert alert-@alertType">@TempData["Message"]</div>
+                <div class="alert alert-@alertType mt-3">@message</div>
             }
         </form>
     </div>
@@ -68,4 +76,5 @@
     <script src="~/js/login-validation.js"></script>
     <script src="~/js/login-controller.js"></script>
 </body>
+
 </html>

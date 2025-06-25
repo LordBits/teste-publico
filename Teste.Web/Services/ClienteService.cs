@@ -23,6 +23,15 @@ namespace Teste.Web.Services
 
             var totalItems = await query.CountAsync();
 
+            // Calcula total de páginas
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            // Se a página solicitada é maior do que a última, volta uma página
+            if (pageNumber > totalPages && totalPages > 0)
+            {
+                pageNumber = totalPages;
+            }
+
             var items = await query
                 .OrderBy(c => c.Codigo)
                 .Skip((pageNumber - 1) * pageSize)

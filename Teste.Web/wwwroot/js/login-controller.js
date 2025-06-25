@@ -27,10 +27,23 @@ function fazerLogin(email, password, isChecked) {
 };
 
 function showBackendError(message) {
-    const errorDiv = document.getElementById('formError');
     const loginBtn = document.getElementById('loginButton');
-    errorDiv.textContent = message;
-    errorDiv.classList.add('text-danger', 'alert', 'alert-danger');
-    //habilita o button
     loginBtn.disabled = false;
+
+    $('.alert').remove(); // remove alertas antigos
+
+    let errorDiv = document.getElementById('formError');
+
+    //Recria e insere no DOM, caso não exista o formDiv
+    if (!errorDiv) {
+        const container = document.getElementById('loginForm');
+
+        errorDiv = document.createElement('div');
+        errorDiv.id = 'formError';
+        container.appendChild(errorDiv);
+    }
+
+    errorDiv.textContent = message;
+    errorDiv.classList.remove('d-none');
+    errorDiv.classList.add('alert', 'alert-danger', 'mt-3');
 };
