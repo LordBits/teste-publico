@@ -73,6 +73,8 @@ namespace Teste.Web.Controllers
 
                 cliente.Documento = DocumentoHelper.SomenteNumeros(cliente.Documento);
 
+                await _clienteService.IsClienteDuplicadoAsync(cliente.Documento, cliente.Codigo);
+
                 await _clienteService.SalvarAsync(cliente);
 
                 TempData["Message"] = isNewCliente ? "Cliente cadastrado com sucesso!" : "Cliente atualizado com sucesso!";
@@ -115,8 +117,6 @@ namespace Teste.Web.Controllers
                 return NotFound();
 
             var clienteModel = _mapper.Map<ClienteModel>(cliente);
-
-            clienteModel.Documento = clienteModel.Documento.FormatarDocumento();
 
             return PartialView("_VisualizarCliente", clienteModel);
         }

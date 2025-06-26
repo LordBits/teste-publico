@@ -1,4 +1,5 @@
 @model Teste.Web.Models.ClienteModel
+@using Teste.Web.Helpers
 
 <div class="modal-header">
     <h5 class="modal-title">Detalhes do Cliente</h5>
@@ -15,8 +16,8 @@
         <dt class="col-sm-3">Fantasia</dt>
         <dd class="col-sm-9">@Model.Fantasia</dd>
 
-        <dt class="col-sm-3">Documento</dt>
-        <dd class="col-sm-9">@Model.Documento</dd>
+        <dt class="col-sm-3">@(Model.Documento.Length == 11 ? "CPF" : "CNPJ")</dt>
+        <dd class="col-sm-9">@Model.Documento.FormatarDocumento()</dd>
 
         <dt class="col-sm-3">Endereço</dt>
         <dd class="col-sm-9">@Model.Endereco</dd>
@@ -24,4 +25,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-</div>
+</diusing Teste.Web.Helpers;
+#line default

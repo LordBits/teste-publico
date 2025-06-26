@@ -1,0 +1,56 @@
+@model Teste.Web.Models.ProdutoModel
+
+@{
+    ViewData["Title"] = Model.Codigo == 0 ? "Cadastrar Produto" : "Editar Produto";
+}
+
+<div class="container mt-3">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="Save" method="post" class="needs-validation" novalidate id="produtoForm">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Codigo" />
+
+        <div class="mb-3">
+            <label asp-for="Descricao" class="form-label"></label>
+            <input asp-for="Descricao" class="form-control" required placeholder="Digite a descrição do produto..." maxlength="100" />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CodigoBarra" class="form-label"></label>
+            <input asp-for="CodigoBarra" class="form-control" required placeholder="Digite o código de barras..." maxlength="13" />
+            <span asp-validation-for="CodigoBarra" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ValorVenda" class="form-label"></label>
+            <input asp-for="ValorVenda" class="form-control" required placeholder="Ex: 99,90" onkeyup="mascaraMoeda(this)" />
+            <span asp-validation-for="ValorVenda" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PesoBruto" class="form-label"></label>
+            <input asp-for="PesoBruto" class="form-control" required placeholder="Ex: 1,200" onkeyup="mascaraPeso(this)" />
+            <span asp-validation-for="PesoBruto" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PesoLiquido" class="form-label"></label>
+            <input asp-for="PesoLiquido" class="form-control" required placeholder="Ex: 1,000" onkeyup="mascaraPeso(this)" />
+            <span asp-validation-for="PesoLiquido" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Salvar
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/imask"></script>
+    <script src="~/js/produto-validation.js" asp-append-version="true"></script>
+}

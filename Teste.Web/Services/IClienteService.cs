@@ -11,5 +11,6 @@ namespace Teste.Web.Services
         Task DeletarAsync(int id);
         Task<Cliente> ObterPorIdAsync(int clienteId);
         Task SalvarAsync(Cliente cliente);
+        Task IsClienteDuplicadoAsync(string documento, int? id);
     }
 }

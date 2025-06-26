@@ -26,7 +26,7 @@ function fazerLogin(email, password, isChecked) {
         });
 };
 
-function showBackendError(message) {
+function showBackendError(message, tipo = "danger") {
     const loginBtn = document.getElementById('loginButton');
     loginBtn.disabled = false;
 
@@ -43,7 +43,24 @@ function showBackendError(message) {
         container.appendChild(errorDiv);
     }
 
-    errorDiv.textContent = message;
+    let icone = "";
+    switch (tipo) {
+        case "success":
+            icone = "<i class='bi bi-check-circle-fill me-2'></i>";
+            break;
+        case "warning":
+            icone = "<i class='bi bi-exclamation-triangle-fill me-2'></i>";
+            break;
+        case "info":
+            icone = "<i class='bi bi-info-circle-fill me-2'></i>";
+            break;
+        case "danger":
+        default:
+            icone = "<i class='bi bi-x-circle-fill me-2'></i>";
+            break;
+    }
+
+    errorDiv.innerHTML = `${icone}${message}`;
+    errorDiv.className = 'alert alert-' + tipo + ' mt-3 d-flex align-items-center';
     errorDiv.classList.remove('d-none');
-    errorDiv.classList.add('alert', 'alert-danger', 'mt-3');
 };

@@ -7,7 +7,7 @@
 <div class="container mt-3">
     <h2>@ViewData["Title"]</h2>
 
-    <form asp-action="Save" method="post" class="needs-validation" novalidate>
+    <form asp-action="Save" name="formCliente" method="post" class="needs-validation" novalidate>
         @Html.AntiForgeryToken()
 
         <input type="hidden" asp-for="Codigo" />
@@ -26,7 +26,7 @@
 
         <div class="mb-3">
             <label asp-for="Documento" class="form-label"></label>
-            <input asp-for="Documento" class="form-control" required placeholder="Digite o nome CPF ou CNPJ..."/>
+            <input asp-for="Documento" class="form-control" required placeholder="Digite o nome CPF ou CNPJ..." onkeyup="mascaraCpfCnpj(this)" maxlength="18"/>
             <div class="text-danger" id="documentoError"></div>
             <span asp-validation-for="Documento" class="text-danger"></span>
         </div>
@@ -44,5 +44,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
     <script src="~/js/cliente-validation.js" asp-append-version="true"></script>
 }

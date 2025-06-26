@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -10,7 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuração do Entity Framework (DbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .EnableSensitiveDataLogging() // Adiciona detalhes ao erro
+);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -75,7 +78,24 @@ builder.Services.AddRateLimiter(options =>
             }));
 });
 
+builder.Services.Configure<MvcOptions>(options =>
+{
+    var provider = options.ModelBindingMessageProvider;
+
+    provider.SetValueMustBeANumberAccessor(_ => "O campo deve ser um número.");
+    provider.SetMissingBindRequiredValueAccessor(_ => "Campo obrigatório.");
+    provider.SetMissingKeyOrValueAccessor(() => "Campo obrigatório.");
+    provider.SetAttemptedValueIsInvalidAccessor((value, field) => $"O valor '{value}' não é válido para {field}.");
+    provider.SetValueIsInvalidAccessor(_ => "Valor inválido.");
+    provider.SetValueMustNotBeNullAccessor(_ => "O campo é obrigatório.");
+});
+
 var app = builder.Build();
+
+//define a cultura global
+var cultureInfo = new CultureInfo("pt-BR");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Pipeline de middlewares
 if (!app.Environment.IsDevelopment())

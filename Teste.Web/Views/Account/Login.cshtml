@@ -1,12 +1,6 @@
 @{
     ViewData["Title"] = "Login";
     Layout = null;
-    var message = TempData["Message"] as string;
-    var alertType = TempData["tipoAlert"] as string ?? "success";
-
-    // Limpa para evitar reaparecer
-    TempData.Remove("Message");
-    TempData.Remove("tipoAlert");
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -60,10 +54,7 @@
                 <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
             <div id="formError" class="d-none"></div>
-            @if (!string.IsNullOrEmpty(message))
-            {
-                <div class="alert alert-@alertType mt-3">@message</div>
-            }
+            <partial name="_AlertaMensagem" />
         </form>
     </div>
     <footer class="site-footer-login text-muted">

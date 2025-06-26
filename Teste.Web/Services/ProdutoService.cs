@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Teste.Web.Core;
 using Teste.Web.Database;
 using Teste.Web.Models;
@@ -19,7 +20,7 @@ namespace Teste.Web.Services
 
         public async Task<PagedResult<ProdutoModel>> ObterTodosAsync(int pageNumber, int pageSize)
         {
-             var query = _context.Produtos.AsQueryable();
+            var query = _context.Produtos.AsQueryable();
 
             var totalItems = await query.CountAsync();
 
@@ -86,6 +87,16 @@ namespace Teste.Web.Services
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task IsCodigoBarraDuplicadoAsync(string codigoBarra, int? id)
+        {
+            var produto = await _context.Produtos
+            .AsNoTracking() // Para não rastrear, evitar de duplicidade em transações do meu ID.
+            .FirstOrDefaultAsync(p => p.CodigoBarra == codigoBarra);
+
+            if ((produto != null && id == null) || (id != null && produto?.Codigo != id))
+                throw new Exception("Não é possível cadastrar produtos diferentes com o mesmo código de barra.");
         }
     }
 }

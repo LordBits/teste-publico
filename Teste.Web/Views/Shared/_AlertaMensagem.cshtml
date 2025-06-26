@@ -1,0 +1,25 @@
+@{
+    var message = TempData["Message"]?.ToString();
+    var tipo = TempData["tipoAlert"]?.ToString() ?? "info";
+
+    var icone = tipo switch
+    {
+        "success" => "<i class='bi bi-check-circle-fill me-2'></i>",
+        "danger" => "<i class='bi bi-x-circle-fill me-2'></i>",
+        "warning" => "<i class='bi bi-exclamation-triangle-fill me-2'></i>",
+        "info" => "<i class='bi bi-info-circle-fill me-2'></i>",
+        _ => ""
+    };
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-@tipo d-flex align-items-center mt-3" role="alert">
+        @Html.Raw(icone)
+        <div>@Html.Raw(message)</div>
+    </div>
+
+    // limpa depois de exibir
+    TempData.Remove("Message");
+    TempData.Remove("tipoAlert");
+}

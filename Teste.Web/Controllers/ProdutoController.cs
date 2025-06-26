@@ -59,6 +59,8 @@ namespace Teste.Web.Controllers
 
             try
             {
+                await _produtoService.IsCodigoBarraDuplicadoAsync(produtoModel.CodigoBarra, produtoModel.Codigo);
+
                 var produto = _mapper.Map<Produto>(produtoModel);
 
                 await _produtoService.SalvarAsync(produto);

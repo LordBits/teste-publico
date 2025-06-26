@@ -1,0 +1,32 @@
+@model Teste.Web.Models.ProdutoModel
+
+<div class="modal-header">
+    <h5 class="modal-title">Detalhes do Produto</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+</div>
+
+<div class="modal-body">
+    <dl class="row">
+        <dt class="col-sm-4">Código</dt>
+        <dd class="col-sm-8">@Model.Codigo</dd>
+
+        <dt class="col-sm-4">Descrição</dt>
+        <dd class="col-sm-8">@Model.Descricao</dd>
+
+        <dt class="col-sm-4">Código de Barras</dt>
+        <dd class="col-sm-8">@Model.CodigoBarra</dd>
+
+        <dt class="col-sm-4">Valor de Venda</dt>
+        <dd class="col-sm-8">@($"R${Model.ValorVenda:C2}")</dd>
+
+        <dt class="col-sm-4">Peso Bruto</dt>
+        <dd class="col-sm-8">@($"{Model.PesoBruto:N3}")Kg</dd>
+
+        <dt class="col-sm-4">Peso Líquido</dt>
+        <dd class="col-sm-8">@($"{Model.PesoLiquido:N3}")Kg</dd>
+    </dl>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+</div>

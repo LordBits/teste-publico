@@ -87,5 +87,17 @@ namespace Teste.Web.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task IsClienteDuplicadoAsync(string documento, int? id)
+        {
+            var cliente = await _context.Clientes
+            .AsNoTracking() // Para não rastrear, evitar de duplicidade em transações do meu ID.
+            .FirstOrDefaultAsync(c => c.Documento == documento);
+
+            if (cliente == null || cliente.Codigo == id)
+                return;
+
+            throw new Exception($"Este documento já está sendo utilizado por outro cliente.");
+        }
     }
 }

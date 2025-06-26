@@ -11,5 +11,6 @@ namespace Teste.Web.Services
         Task DeletarAsync(int id);
         Task<Produto> ObterPorIdAsync(int produtoId);
         Task SalvarAsync(Produto produto);
+        Task IsCodigoBarraDuplicadoAsync(string codigoBarra, int? id);
     }
 }
