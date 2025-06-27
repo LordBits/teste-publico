@@ -24,7 +24,6 @@ Este projeto é uma aplicação web construída com ASP.NET Core MVC que inclui 
 - Entity Framework Core com SQL Server
 - JavaScript para validações no frontend
 - Bootstrap para estilização
-- Swagger para documentação de APIs
 
 ---
 
