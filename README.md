@@ -37,6 +37,6 @@ Este projeto é uma aplicação web construída com ASP.NET Core MVC que inclui 
 ---
 
 ## Como usar
-
+Em DataBase está o que precisa rodar no Banco pra começar a Operar.
+Depois são configurações de portas com seu local e firewall.
 Basta rodar a aplicação em ambiente configurado com SQL Server, acessar via navegador e interagir com o sistema de autenticação e páginas protegidas.
-
