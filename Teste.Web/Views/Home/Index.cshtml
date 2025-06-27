@@ -42,4 +42,20 @@
             </div>
         </div>
     </div>
+
+    <div class="card text-white bg-white mb-3 shadow">
+        <div class="d-flex justify-content-end mb-3">
+            <select id="tipoVisualizacao" class="form-select w-auto">
+                <option value="mes" selected>Por Mês</option>
+                <option value="ano">Por Ano</option>
+            </select>
+        </div>
+
+        <canvas id="graficoCadastro"></canvas>
+    </div>
+
 </div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/dashboard-charts.js" asp-append-version="true"></script>
+}

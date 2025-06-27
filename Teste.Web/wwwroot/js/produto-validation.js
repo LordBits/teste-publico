@@ -48,23 +48,28 @@ function validarCodigoBarras(input) {
 
     mensagemErro.textContent = "";
 
-    if (!/^[0-9]{13}$/.test(codigo)) {
-        mensagemErro.textContent = "O código de barras deve conter 13 dígitos.";
-        return;
+    // Verifica se é numérico e tem 13 dígitos
+    if (!/^\d{13}$/.test(codigo)) {
+        mensagemErro.textContent = "O código de barras deve conter exatamente 13 dígitos numéricos.";
+        return false;
     }
 
-    // Cálculo do dígito verificador EAN-13
+    // Calcula o dígito verificador
     let soma = 0;
     for (let i = 0; i < 12; i++) {
-        const num = parseInt(codigo[i]);
-        soma += i % 2 === 0 ? num : num * 3;
+        const num = parseInt(codigo.charAt(i), 10);
+        soma += (i % 2 === 0) ? num : num * 3;
     }
-    const digitoCalculado = (10 - (soma % 10)) % 10;
-    const digitoInformado = parseInt(codigo[12]);
 
-    if (digitoCalculado !== digitoInformado) {
-        mensagemErro.textContent = "Código de barras inválido (dígito verificador incorreto).";
+    const digitoEsperado = (10 - (soma % 10)) % 10;
+    const digitoInformado = parseInt(codigo.charAt(12), 10);
+
+    if (digitoEsperado !== digitoInformado) {
+        mensagemErro.textContent = `Código inválido. Dígito verificador deveria ser ${digitoEsperado}, mas é ${digitoInformado}.`;
+        return false;
     }
+
+    return true;
 };
 
 document.addEventListener("DOMContentLoaded", function () {

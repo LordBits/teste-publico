@@ -20,9 +20,11 @@ namespace Teste.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5, string? busca = null)
         {
-            var produtos = await _produtoService.ObterTodosAsync(pageNumber, pageSize);
+            var produtos = await _produtoService.ObterTodosAsync(pageNumber, pageSize, busca);
+
+            ViewBag.busca = busca;
 
             return View(produtos);
         }
@@ -71,8 +73,11 @@ namespace Teste.Web.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = $"Erro ao salvar produto: {ex.Message}";
+                var errorMsg = ex.Message;
+                if (ex.InnerException != null)
+                    errorMsg += " | Inner Exception: " + ex.InnerException.Message;
 
+                TempData["Message"] = $"Erro ao salvar produto: {errorMsg}";
                 TempData["tipoAlert"] = "danger";
             }
 

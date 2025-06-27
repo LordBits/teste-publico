@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Teste.Web.Core
 {
     public class Cliente
@@ -7,5 +9,6 @@ namespace Teste.Web.Core
         public required string Fantasia { get; set; }
         public required string Documento { get; set; }
         public required string Endereco { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
     }
 }

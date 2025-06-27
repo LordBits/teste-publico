@@ -1,6 +1,5 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Teste.Web.Core;
 using Teste.Web.Database;
 using Teste.Web.Models;
@@ -18,9 +17,19 @@ namespace Teste.Web.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<ProdutoModel>> ObterTodosAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<ProdutoModel>> ObterTodosAsync(int pageNumber, int pageSize, string? busca = null)
         {
             var query = _context.Produtos.AsQueryable();
+
+            if (!string.IsNullOrEmpty(busca))
+            {
+                busca = busca.ToLower();
+
+                query = query.Where(p =>
+                    (!string.IsNullOrEmpty(p.Descricao) && p.Descricao.ToLower().Contains(busca)) ||
+                    (!string.IsNullOrEmpty(p.CodigoBarra) && p.CodigoBarra.Contains(busca))
+                );
+            }
 
             var totalItems = await query.CountAsync();
 
@@ -46,11 +55,6 @@ namespace Teste.Web.Services
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-        }
-
-        public async Task<int> ContarProdutosAsync()
-        {
-            return await _context.Produtos.CountAsync();
         }
 
         public async Task DeletarAsync(int produtoId)
@@ -95,8 +99,13 @@ namespace Teste.Web.Services
             .AsNoTracking() // Para não rastrear, evitar de duplicidade em transações do meu ID.
             .FirstOrDefaultAsync(p => p.CodigoBarra == codigoBarra);
 
-            if ((produto != null && id == null) || (id != null && produto?.Codigo != id))
+            if ((produto != null && id == null) || (id != null && produto != null && produto.Codigo != id))
                 throw new Exception("Não é possível cadastrar produtos diferentes com o mesmo código de barra.");
+        }
+
+        public async Task<IList<Produto>> ObterTodosEntidadeAsync()
+        {
+            return await _context.Produtos.ToListAsync();
         }
     }
 }

@@ -30,6 +30,18 @@ namespace Teste.Web.Database
                 entity.Property(p => p.Codigo).ValueGeneratedOnAdd();
             });
 
+            modelBuilder.Entity<Cliente>()
+                .Property(c => c.DataCadastro)
+                .HasColumnType("datetime")  // força datetime ao invés de datetime2
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Produto>()
+                .Property(p => p.DataCadastro)
+                .HasColumnType("datetime")  // força datetime ao invés de datetime2
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             // Configuração para a tabela Produto - Ajustando o tipo do campo decimal
             modelBuilder.Entity<Produto>().Property(p => p.ValorVenda).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Produto>().Property(p => p.PesoBruto).HasColumnType("decimal(18,3)");

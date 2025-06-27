@@ -21,9 +21,11 @@ namespace Teste.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5, string? busca = null)
         {
-            var clientes = await _clienteService.ObterTodosAsync(pageNumber, pageSize);
+            var clientes = await _clienteService.ObterTodosAsync(pageNumber, pageSize, busca);
+
+            ViewBag.busca = busca;
 
             return View(clientes);
         }

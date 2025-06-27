@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Teste.Web.Core
 {
     public class Produto
@@ -8,5 +10,6 @@ namespace Teste.Web.Core
         public decimal ValorVenda { get; set; }
         public decimal PesoBruto { get; set; }
         public decimal PesoLiquido { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
     }
 }

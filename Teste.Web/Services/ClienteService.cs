@@ -17,9 +17,20 @@ namespace Teste.Web.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<ClienteModel>> ObterTodosAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<ClienteModel>> ObterTodosAsync(int pageNumber, int pageSize, string? busca = null)
         {
             var query = _context.Clientes.AsQueryable();
+
+            if (!string.IsNullOrEmpty(busca))
+            {
+                busca = busca.ToLower();
+
+                query = query.Where(c =>
+                    (!string.IsNullOrEmpty(c.Nome) && c.Nome.ToLower().Contains(busca)) ||
+                    (!string.IsNullOrEmpty(c.Fantasia) && c.Fantasia.Contains(busca)) ||
+                    (!string.IsNullOrEmpty(c.Documento) && c.Documento.Contains(busca))
+                );
+            }
 
             var totalItems = await query.CountAsync();
 
@@ -45,11 +56,6 @@ namespace Teste.Web.Services
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-        }
-
-        public async Task<int> ContarClientesAsync()
-        {
-            return await _context.Clientes.CountAsync();
         }
 
         public async Task DeletarAsync(int clienteId)
@@ -98,6 +104,11 @@ namespace Teste.Web.Services
                 return;
 
             throw new Exception($"Este documento já está sendo utilizado por outro cliente.");
+        }
+
+        public async Task<IList<Cliente>> ObterTodosEntidadeAsync()
+        {
+            return await _context.Clientes.ToListAsync();
         }
     }
 }

@@ -61,6 +61,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IDashBoardService, DashBoardService>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Rate Limiting
@@ -124,7 +125,8 @@ app.Use(async (context, next) =>
         $"script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
         $"style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
         $"font-src 'self' https://cdn.jsdelivr.net; " +
-        $"img-src 'self' data:;");
+        $"img-src 'self' data:; " +
+        $"connect-src 'self';");
 
     await next();
 });

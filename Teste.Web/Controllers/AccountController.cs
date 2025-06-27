@@ -57,7 +57,7 @@ namespace Teste.Web.Controllers
 
                 HttpContext.Session.SetString("UltimoLogin", ultimoLogin.ToString());
 
-                usuario.UltimoLogin = DateTime.UtcNow;
+                usuario.UltimoLogin = DateTime.Now;
 
                 await _usuarioService.SalvarAsync(usuario);
 
