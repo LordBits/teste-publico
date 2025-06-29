@@ -1,42 +1,112 @@
 # Projeto ASP.NET Core - Softline
 
-## Visão Geral
+## 📌 Visão Geral
 
-Este projeto é uma aplicação web construída com ASP.NET Core MVC que inclui autenticação baseada em cookies, controle de sessão e rotas configuradas para URLs amigáveis, com todos os caminhos em letras minúsculas e separação por hífens.
-
----
-
-## Funcionalidades
-
-- Sistema de login e logout com gerenciamento seguro de sessões.
-- Controle de acesso às páginas, garantindo que usuários não autenticados sejam redirecionados.
-- URLs consistentes, padronizadas em minúsculas e com nomes separados por hífen para melhor usabilidade e SEO.
-- Prevenção de cache de páginas protegidas para impedir o acesso após logout pelo botão "voltar" do navegador.
-- Mensagens de feedback para ações do usuário, como erros de login ou notificações após logout.
-- Interface responsiva com validações no lado cliente para melhor experiência do usuário.
-- Configuração de ambiente para facilitar desenvolvimento e testes, incluindo documentação das rotas e endpoints.
+Este projeto é uma aplicação web construída com **ASP.NET Core MVC**, com autenticação baseada em cookies, controle de sessão e rotas amigáveis (URLs em minúsculas com hífens). Foi planejado para ser **seguro, responsivo, portável e escalável**, pronto para ambientes locais ou hospedagem online via IIS ou outros serviços.
 
 ---
 
-## Tecnologias Utilizadas
+## ✨ Funcionalidades
+
+- ✅ Login e logout com gerenciamento seguro de sessão
+- 🔐 Redirecionamento automático de usuários não autenticados
+- 🌐 URLs amigáveis e otimizadas para SEO
+- 🧼 Prevenção de cache em páginas protegidas (impede acesso com botão "voltar")
+- 🔔 Mensagens de feedback para interações (ex: erro de login)
+- 📱 Interface responsiva com validações no lado cliente
+- 🧪 Separação clara de ambientes (`Development`, `Production`, etc.)
+- 📚 Documentação de rotas e endpoints com Swagger
+
+---
+
+## 🛠 Tecnologias Utilizadas
 
 - ASP.NET Core MVC
-- Entity Framework Core com SQL Server
-- JavaScript para validações no frontend
-- Bootstrap para estilização
+- Entity Framework Core + SQL Server
+- JavaScript puro + Bootstrap
+- Swagger (OpenAPI)
+- IIS (Internet Information Services) como servidor opcional
+- NuGet com configuração customizada (`nuget.config`)
 
 ---
 
-## Considerações Gerais
+## 🧩 Estrutura do Projeto
 
-- O projeto foi estruturado visando manutenibilidade e escalabilidade futura.
-- As rotas e URLs foram configuradas para melhorar a experiência do usuário e favorecer práticas recomendadas de SEO.
-- O sistema de autenticação foi desenvolvido para garantir segurança e simplicidade na navegação.
-- O cache das páginas protegidas é desabilitado para aumentar a segurança e evitar inconsistências de sessão.
+```
+/teste
+│
+├── Teste.sln
+├── global.json
+├── nuget.config
+└── Teste.Web/
+    ├── Controllers/
+    ├── Views/
+    ├── Models/
+    ├── appsettings.json
+    └── Program.cs
+```
 
 ---
 
-## Como usar
-Em DataBase está o que precisa rodar no Banco pra começar a Operar.
-Depois são configurações de portas com seu local e firewall.
-Basta rodar a aplicação em ambiente configurado com SQL Server, acessar via navegador e interagir com o sistema de autenticação e páginas protegidas.
+## 🚀 Como Rodar em Outra Máquina (Ambiente Local)
+
+1. **Pré-requisitos**:
+   - [.NET SDK](https://dotnet.microsoft.com/en-us/download) (mesma versão definida no `global.json`)
+   - SQL Server (local ou remoto)
+   - Visual Studio Code ou Visual Studio
+   - IIS + .NET Hosting Bundle (se quiser simular ambiente de produção)
+
+2. **Clonar o repositório**:
+   ```bash
+   git clone https://github.com/LordBits/teste-publico.git
+   cd teste
+   ```
+
+3. **Restaurar pacotes** (com nuget.config seguro):
+   ```bash
+   dotnet restore --configfile nuget.config
+   ```
+
+4. **Rodar a aplicação**:
+   ```bash
+   dotnet run --project Teste.Web
+   ```
+
+5. **Acessar**:
+   Abra o navegador e vá para `http://localhost:5000` ou a porta definida no `launchSettings.json`.
+
+---
+
+## 💾 Publicação e Hospedagem
+
+> Para simular hospedagem real:
+
+1. Publique o projeto:
+   ```bash
+   dotnet publish Teste.Web -c Release -o ./publicado
+   ```
+
+2. No IIS:
+   - Crie um novo site apontando para `./publicado`
+   - Use o .NET Hosting Bundle instalado
+   - Configure permissões para `IIS_IUSRS`
+
+---
+
+## 🧠 Considerações Finais
+
+- O projeto está pronto para ser executado em múltiplos ambientes, com configuração isolada de pacotes e ambientes.
+- URLs e sessões foram cuidadosamente tratadas para maximizar segurança e usabilidade.
+- Você pode adaptar o sistema para novos módulos e bancos com facilidade.
+
+---
+
+## 👨‍💻 Autor
+
+Matheus Bispo Domingues
+
+---
+
+## 📄 Licença
+
+Este projeto é de uso pessoal e educacional. Para fins comerciais, entre em contato com o autor.
